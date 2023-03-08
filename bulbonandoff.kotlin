@@ -1,0 +1,62 @@
+package com.sarah.bulbonandoff
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.sarah.bulbonandoff.ui.theme.BulbonandoffTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            BulbonandoffTheme {
+                BulbApp()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun BulbApp() {
+    BulbWithButtonAndImage(modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.Center)
+    )
+}
+
+@Composable
+fun BulbWithButtonAndImage(modifier: Modifier = Modifier) {
+    var result by remember { mutableStateOf( 1) }
+    var prime = result%2
+    val imageResource = when(prime) {
+        1 -> R.drawable.bulb_imezima
+        else -> R.drawable.bulb_imewaka
+    }
+
+    val stringR = when(prime) {
+        1 -> R.string.bulbimezima
+        else -> R.string.bulbimewaka
+    }
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(painter = painterResource(imageResource), contentDescription = result.toString())
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { result = result + 1 }) {
+            Text(text = stringResource(stringR), fontSize = 24.sp)
+        }
+    }
+}
